@@ -18,6 +18,10 @@
                     @endif
 
                     {{ __('You are logged in!') }}
+
+                    <div><h3>Benvenuto {{ $user->name }}</h3></div>
+
+                    <div>Accesso effettuato con la mail: {{ $user->email }}</div>
                 </div>
             </div>
         </div>
