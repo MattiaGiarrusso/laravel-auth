@@ -3,7 +3,7 @@
 @section('content')
     <h1>Lista Progetti</h1>
 
-    <table class="table table-striped">
+    <table class="table table-sm table-striped fs-6 border ms-radius mt-3">
         <thead>
           <tr>
             <th scope="col">ID</th>
@@ -12,6 +12,7 @@
             <th scope="col">Slug</th>
             <th scope="col">Data creazione</th>
             <th scope="col">Ultimo aggiornamento</th>
+            <th scope="col">Azioni</th>
           </tr>
         </thead>
         <tbody>
@@ -23,6 +24,14 @@
             <td>{{ $project->slug }}</td>
             <td>{{ $project->created_at }}</td>
             <td>{{ $project->update_at }}</td>
+            <td>
+                <div>
+                  <a href="{{ route('admin.projects.show', ['project'=> $project->id]) }}" type="button" class="btn btn-primary ms-btn p-1 badge text-center">Mostra</a>
+                </div>
+                <div>
+                  <a href="{{ route('admin.projects.destroy', ['project'=> $project->id]) }}" type="button" class="btn btn-danger ms-btn p-1 badge text-center">Elimina</a>
+                </div>
+            </td>
           </tr>              
           @endforeach  
         </tbody>
