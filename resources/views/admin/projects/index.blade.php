@@ -3,7 +3,7 @@
 @section('content')
     <h1>Lista Progetti</h1>
 
-    <table class="table table-sm table-striped fs-6 border ms-radius mt-3">
+    <table class="table table-sm table-striped fs-6 border mt-3">
         <thead>
           <tr>
             <th scope="col">ID</th>
