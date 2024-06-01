@@ -9,7 +9,6 @@
             <th scope="col">ID</th>
             <th scope="col">Nome</th>
             <th scope="col">Cliente</th>
-            <th scope="col">Slug</th>
             <th scope="col">Data creazione</th>
             <th scope="col">Ultimo aggiornamento</th>
             <th scope="col">Azioni</th>
@@ -21,12 +20,14 @@
             <td>{{ $project->id }}</td>
             <td>{{ $project->name }}</td>
             <td>{{ $project->client_name }}</td>
-            <td>{{ $project->slug }}</td>
             <td>{{ $project->created_at }}</td>
             <td>{{ $project->update_at }}</td>
             <td>
                 <div>
                   <a href="{{ route('admin.projects.show', ['project'=> $project->id]) }}" type="button" class="btn btn-primary ms-btn p-1 badge text-center">Mostra</a>
+                </div>
+                <div>
+                  <a href="{{ route('admin.projects.edit', ['project'=> $project->id]) }}" type="button" class="btn btn-success ms-btn ms-fs-small badge text-center">Modifica</a>
                 </div>
                 <div>
                   <a href="{{ route('admin.projects.destroy', ['project'=> $project->id]) }}" type="button" class="btn btn-danger ms-btn p-1 badge text-center">Elimina</a>

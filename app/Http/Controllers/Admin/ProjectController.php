@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Project;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 
 class ProjectController extends Controller
 {
@@ -31,7 +33,7 @@ class ProjectController extends Controller
      */
     public function create()
     {
-        //
+        return view ('admin.projects.create');
     }
 
     /**
@@ -42,7 +44,17 @@ class ProjectController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $formData = $request -> all();
+        // $formData['slug'] = Str::slug($formData['name'], '-'); ***metodo alternativo***
+
+        $this -> validation($formData);
+
+        $newProject = new Project();
+        $newProject -> fill($formData);
+        $newProject -> slug = Str::slug($newProject->name, '-');
+        $newProject -> save();
+        
+        return redirect()->route('admin.projects.show', ['project' => $newProject->id]);
     }
 
     /**
@@ -64,7 +76,13 @@ class ProjectController extends Controller
      */
     public function edit($id)
     {
-        //
+        $project = Project::findOrFail($id);
+
+        $data = [
+            'project' => $project
+        ];
+
+        return view ('admin.projects.edit', $data);
     }
 
     /**
@@ -76,7 +94,15 @@ class ProjectController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $formData = $request->all();
+        $formData['slug'] = Str::slug($formData['name'], '-');
+        $this->validation($formData);
+        $project = Project::findOrFail($id);
+
+        // $project->slug = Str::slug($formData['name'], '-'); ***metodo alternativo***
+        $project->update($formData);
+
+        return redirect()-> route('admin.projects.show', ['project'=> $project-> id]);
     }
 
     /**
@@ -87,6 +113,34 @@ class ProjectController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $project = Project::findOrFail($id);
+        $project->delete();
+
+        return redirect()->route('admin.projects.index');
+    }
+
+
+    private function validation($data) {
+        $validator = Validator::make(
+            $data,
+            [
+                'name' => 'required|min:5|max:200',
+                'summary' => 'required|min:20|max:500',
+                'client_name' => 'required|min:5|max:255',
+            ],
+            [
+                'name.required' => "Il campo 'Nome del progetto' è obbligatorio",
+                'name.min' => "Il campo 'Nome del progetto' deve avere almeno 5 caratteri",
+                'name.max' => "Il campo 'Nome del progetto' non può avere più di 200 caratteri",
+                'summary.required' => "Il campo 'Descrizione del progetto' è obbligatorio",
+                'summary.min' => "Il campo 'Descrizione del progetto' deve contenere più di 20 caratteri",
+                'summary.max' => "Il campo 'Descrizione del progetto' deve contenere meno di 500 caratteri",
+                'client_name.required' => "Il campo 'Cliente del progetto' è obbligatorio",
+                'client_name.min' => "Il campo 'Cliente del progetto' deve avere almeno 5 caratteri",
+                'client_name.max' => "Il campo 'Cliente del progetto' non può avere più di 255 caratteri",
+            ]
+        )->validate();
+
+        return $validator;
     }
 }

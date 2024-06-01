@@ -19,7 +19,7 @@
 
     <div class="bg-body-secondary rounded p-2 mt-4">
         <div>
-            <h6>Riepilogo</h6>
+            <h6>Descrizione del progetto</h6>
         </div>
         <div>
             {{ $project->summary }}
