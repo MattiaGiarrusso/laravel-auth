@@ -1,6 +1,8 @@
 @extends('layouts.admin')
 
 @section('content')
+    {{-- @include('partials.flash-messages') --}}
+
     <h2>Lista Progetti</h2>
 
     <table class="table table-sm table-striped fs-6 border mt-3">
@@ -24,13 +26,13 @@
             <td>{{ $project->update_at }}</td>
             <td>
                 <div>
-                  <a href="{{ route('admin.projects.show', ['project'=> $project->id]) }}" type="button" class="btn btn-primary ms-btn p-1 badge text-center">Mostra</a>
+                  <a href="{{ route('admin.projects.show', ['project'=> $project->slug]) }}" type="button" class="btn btn-primary ms-btn p-1 badge text-center">Mostra</a>
                 </div>
                 <div>
-                  <a href="{{ route('admin.projects.edit', ['project'=> $project->id]) }}" type="button" class="btn btn-success ms-btn ms-fs-small badge text-center">Modifica</a>
+                  <a href="{{ route('admin.projects.edit', ['project'=> $project->slug]) }}" type="button" class="btn btn-success ms-btn ms-fs-small badge text-center">Modifica</a>
                 </div>
                 <div>
-                  <form action="{{ route('admin.projects.destroy', ['project'=> $project->id]) }}" method="POST">
+                  <form action="{{ route('admin.projects.destroy', ['project'=> $project->slug]) }}" method="POST">
                   @csrf
                   @method('DELETE')
                     <button type="submit" class="btn btn-danger ms-btn p-1 badge text-center">Elimina</button>

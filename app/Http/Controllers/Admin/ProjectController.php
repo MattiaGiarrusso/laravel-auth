@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Models\Project;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Storage;
 
 class ProjectController extends Controller
 {
@@ -19,11 +21,7 @@ class ProjectController extends Controller
     {
         $projects = Project::all();
 
-        $data = [
-             'projects'=>$projects
-        ];
-
-        return view ('admin.projects.index', $data);
+        return view ('admin.projects.index', compact('projects'));
     }
 
     /**
@@ -50,11 +48,12 @@ class ProjectController extends Controller
         $this -> validation($formData);
 
         $newProject = new Project();
-        $newProject -> fill($formData);
-        $newProject -> slug = Str::slug($newProject->name, '-');
-        $newProject -> save();
+        $newProject->fill($formData);
+        $newProject->slug = Str::slug($newProject->name, '-');
+        $newProject->save();
         
-        return redirect()->route('admin.projects.show', ['project' => $newProject->id]);
+        return redirect()->route('admin.projects.show', ['project' => $newProject->slug])->with('message', $newProject->name . ' creato con successo.');
+
     }
 
     /**
@@ -74,15 +73,9 @@ class ProjectController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Project $project)
     {
-        $project = Project::findOrFail($id);
-
-        $data = [
-            'project' => $project
-        ];
-
-        return view ('admin.projects.edit', $data);
+        return view ('admin.projects.edit', compact('project'));
     }
 
     /**
@@ -92,17 +85,17 @@ class ProjectController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Project $project)
     {
         $formData = $request->all();
-        $formData['slug'] = Str::slug($formData['name'], '-');
-        $this->validation($formData);
-        $project = Project::findOrFail($id);
+        // $formData['slug'] = Str::slug($formData['name'], '-'); metodo alternativo
 
-        // $project->slug = Str::slug($formData['name'], '-'); ***metodo alternativo***
+        $this->validation($formData);
+
+        $project->slug = Str::slug($formData['name'], '-'); 
         $project->update($formData);
 
-        return redirect()-> route('admin.projects.show', ['project'=> $project-> id]);
+        return redirect()-> route('admin.projects.show', ['project'=> $project->slug])->with('message', $project->name . ' aggiornato con successo.');
     }
 
     /**
@@ -111,12 +104,11 @@ class ProjectController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Project $project)
     {
-        $project = Project::findOrFail($id);
         $project->delete();
 
-        return redirect()->route('admin.projects.index');
+        return redirect()->route('admin.projects.index')->with('message', $project->name . ' cancellato con successo.');
     }
 
 

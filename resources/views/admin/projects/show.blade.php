@@ -1,6 +1,7 @@
 @extends('layouts.admin')
 
 @section('content')
+{{-- @include('partials.flash-messages') --}}
 
 <section>
     <div class="bg-body-secondary rounded d-flex align-items-center">
