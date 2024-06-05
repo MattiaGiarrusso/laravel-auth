@@ -18,6 +18,12 @@
         </div>
     </div>
 
+    @if ($project->cover_image)
+        <div>
+            <img src="{{ asset('storage/' , $project->cover_image) }}" alt="{{ $project->name }}">
+        </div>
+    @endif
+
     <div class="bg-body-secondary rounded p-2 mt-4">
         <div>
             <h6>Descrizione del progetto</h6>

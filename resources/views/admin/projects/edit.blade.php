@@ -4,7 +4,7 @@
      
     <h2>Modifica progetto: {{ $project->name }}</h2>
     
-    <form action="{{ route('admin.projects.update', ['project'=> $project->slug]) }}" method="POST">
+    <form action="{{ route('admin.projects.update', ['project'=> $project->slug]) }}" method="POST" encytype="multiparti/form-data">
         @csrf
         @method('PUT')
      
@@ -23,6 +23,18 @@
         @error('client_name')
             <div class="alert alert-danger my-2">{{ $message }}</div>
         @enderror
+
+        <div class="mb-3">
+            <label for="cover_image" class="form-label">Default file input example</label>
+            <input class="form-control" type="file" id="cover_image" name="cover_image">
+            @if($post-cover_image)
+                <div>
+                    <img width="150" src="{{ asset('storage/' , $project->cover_image) }}" alt="{{ $project->name }}">
+                </div>                
+            @else
+                <small>Nessuna immagine disponibile</small>                
+            @endif
+        </div>
 
         <div class="mb-3">
             <label for="summary" class="form-label"><strong>Descrizione del progetto</strong></label>

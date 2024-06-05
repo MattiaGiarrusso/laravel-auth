@@ -45,6 +45,12 @@ class ProjectController extends Controller
         $formData = $request -> all();
         // $formData['slug'] = Str::slug($formData['name'], '-'); ***metodo alternativo***
 
+        if($request->hasFile('cover_image')) {
+            $img_path = Storage::disk('public')->put('project_images', $formData['cover_image']);
+
+            $formData['cover_image'] = $img_path;
+        }
+
         $this -> validation($formData);
 
         $newProject = new Project();
@@ -89,6 +95,11 @@ class ProjectController extends Controller
     {
         $formData = $request->all();
         // $formData['slug'] = Str::slug($formData['name'], '-'); metodo alternativo
+        if($request->hasFile('cover_image')) {
+            $img_path = Storage::disk('public')->put('project_images', $formData['cover_image']);
+
+            $formData['cover_image'] = $img_path;
+        }
 
         $this->validation($formData);
 
@@ -119,6 +130,7 @@ class ProjectController extends Controller
                 'name' => 'required|min:5|max:200',
                 'summary' => 'required|min:20|max:500',
                 'client_name' => 'required|min:5|max:255',
+                'cover_image' => 'nullable|image|max:250',
             ],
             [
                 'name.required' => "Il campo 'Nome del progetto' è obbligatorio",

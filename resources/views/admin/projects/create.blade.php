@@ -4,7 +4,7 @@
     
     <h2>Crea un nuovo progetto</h2>
 
-    <form action="{{ route('admin.projects.store') }}" method="POST">
+    <form action="{{ route('admin.projects.store') }}" method="POST" encytype="multiparti/form-data">
         @csrf
          
         <div class="mb-3">
@@ -22,6 +22,11 @@
         @error('client_name')
             <div class="alert alert-danger my-2">{{ $message }}</div>
         @enderror
+
+        <div class="mb-3">
+            <label for="cover_image" class="form-label">Default file input example</label>
+            <input class="form-control" type="file" id="cover_image" name="cover_image">
+        </div>
 
         <div class="mb-3">
             <label for="summary" class="form-label"><strong>Descrizione del progetto</strong></label>
